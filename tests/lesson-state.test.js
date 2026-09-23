@@ -168,14 +168,23 @@ test("getCurrentQuestion returns null once the lesson is complete", () => {
   assert.equal(getCurrentQuestion(s), null);
 });
 
-// Known gap, reported to the lead: the state machine trusts the index it is
-// given. The UI never sends one out of range, but a tampered page could.
-// These are `todo` tests: they run and report, and they do not fail the suite.
-test(
-  "rejects a selection index outside the four choices",
-  { todo: "selectChoice accepts any number; checkAnswer then scores it as wrong" },
-  () => {
-    const s = selectChoice(fresh(), 9);
-    assert.equal(s.selectedChoice, null);
+test("ignores a selection that is not one of the four choices", () => {
+  const start = selectChoice(fresh(), 1);
+  for (const bad of [9, 4, -1, 1.5, NaN, Infinity, "2", null, undefined, {}]) {
+    assert.equal(selectChoice(start, bad), start, `index ${String(bad)} is ignored`);
   }
-);
+  assert.equal(selectChoice(start, 0).selectedChoice, 0, "0 is still valid");
+  assert.equal(selectChoice(start, 3).selectedChoice, 3, "3 is still valid");
+});
+
+test("an ignored selection cannot be scored", () => {
+  const s = checkAnswer(selectChoice(fresh(), 9));
+  assert.equal(s.checked, false, "nothing was selected, so nothing is checked");
+  assert.equal(s.score, 0);
+});
+
+test("selecting does nothing once the lesson is complete", () => {
+  let s = fresh();
+  for (let i = 0; i < 5; i++) s = answer(s, true);
+  assert.equal(selectChoice(s, 0), s);
+});

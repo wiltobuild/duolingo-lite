@@ -38,9 +38,16 @@ export function isComplete(state) {
   return state.index >= state.questions.length;
 }
 
-/** [P0] Change the selected choice before submitting. No-op once checked. */
+/**
+ * [P0] Change the selected choice before submitting. No-op once checked,
+ * and for an index that is not one of the current question's choices
+ * (the UI never sends one, but the page is open to tampering).
+ */
 export function selectChoice(state, choiceIndex) {
   if (state.checked) return state;
+  const question = getCurrentQuestion(state);
+  if (!question || !Number.isInteger(choiceIndex)) return state;
+  if (choiceIndex < 0 || choiceIndex >= question.choices.length) return state;
   return { ...state, selectedChoice: choiceIndex };
 }
 
