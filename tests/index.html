@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browser tests</title>
+
+  <!-- Same stylesheets as the app, so the tests measure the real styles. -->
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+
+  <style>
+    #summary { font: 700 18px/1.4 system-ui, sans-serif; margin: 16px 0; }
+    #results { font: 13px/1.5 ui-monospace, monospace; white-space: pre-wrap; }
+    .pass { color: #247b3e; }
+    .fail { color: #c63820; font-weight: 700; }
+    .todo { color: #7a5c00; }
+    #frames iframe { border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <!--
+    Browser tests. No dependencies: serve the repo (npm run dev), then open
+    http://localhost:5173/tests/ — results appear below and in
+    window.__testResults.
+  -->
+  <h1>Browser tests</h1>
+  <div id="summary">Running…</div>
+  <pre id="results"></pre>
+
+  <div id="fixtures"></div>
+  <div id="frames"></div>
+
+  <script type="module" src="browser-tests.js"></script>
+</body>
+</html>
