@@ -49,9 +49,7 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
       ${question.choices
         .map(
           (choice, i) =>
-            `<button class="choice${choiceModifier(state, i, correctIndex)}" type="button"
-              data-choice-index="${i}"${state.checked ? " disabled" : ""}
-              aria-pressed="${!state.checked && state.selectedChoice === i}">${escapeHtml(choice)}</button>`
+            choiceButton(state, i, correctIndex, choice)
         )
         .join("")}
     </div>
@@ -127,14 +125,34 @@ function answeredCount(state) {
   return state.index;
 }
 
-/** The state-dependent modifier class (with a leading space) for one choice button. */
-function choiceModifier(state, i, correctIndex) {
+/**
+ * One answer button. Color alone must not carry the state, so each state
+ * also has a symbol (hidden from screen readers) and, for the answer
+ * feedback, spoken text that only screen readers get.
+ */
+function choiceButton(state, i, correctIndex, text) {
+  let modifier = "";
+  let mark = "";
+  let spoken = "";
   if (state.checked) {
-    if (i === correctIndex) return " choice--correct";
-    if (i === state.selectedChoice) return " choice--wrong";
-    return "";
+    if (i === correctIndex) {
+      modifier = " choice--correct";
+      mark = "✓";
+      spoken = " (correct answer)";
+    } else if (i === state.selectedChoice) {
+      modifier = " choice--wrong";
+      mark = "✕";
+      spoken = " (your answer, incorrect)";
+    }
+  } else if (i === state.selectedChoice) {
+    modifier = " choice--selected";
+    mark = "●";
   }
-  return i === state.selectedChoice ? " choice--selected" : "";
+
+  return `<button class="choice${modifier}" type="button" data-choice-index="${i}"${state.checked ? " disabled" : ""}
+    aria-pressed="${!state.checked && state.selectedChoice === i}"><span class="choice__mark" aria-hidden="true">${mark}</span><span>${escapeHtml(text)}</span>${
+      spoken ? `<span class="visually-hidden">${spoken}</span>` : ""
+    }</button>`;
 }
 
 function escapeHtml(str) {
