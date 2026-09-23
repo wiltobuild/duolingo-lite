@@ -28,15 +28,14 @@ blockers below.
 | Feedback banner announced to screen readers (`role="status"`, `aria-live="polite"`) | ✅ Pass |
 | Visible focus state on interactive elements (`:focus-visible` in base.css, not overridden anywhere) | ✅ Pass — confirmed live via Tab key, clear outline on choice buttons |
 | Reduced-motion respected | ✅ Pass — `@media (prefers-reduced-motion: reduce)` in base.css disables all transitions/animations globally; components.css has no motion outside that scope |
-| Color contrast — feedback banner text (`--good`/`--bad` on their `-wash` backgrounds, 14px/600 weight → counts as normal text, needs 4.5:1) | ❌ **Fail (light mode).** `--good` on `--good-wash` = 3.02:1, `--bad` on `--bad-wash` = 3.24:1. Dark mode passes (6.67:1 / 5.68:1). This is a token-level issue (`css/tokens.css`), not something to patch per-component — flagging for the team since other screens reuse these tokens. |
-| Color contrast — `.btn-primary` (white text on `--accent`, 15px/700 — doesn't meet the 18.66px bold threshold for "large text", needs 4.5:1) | ❌ **Fail.** Light mode 3.28:1, dark mode 2.28:1 (worse — dark mode's `--accent` is lighter/lower-contrast against white). Shared button used everywhere; also a token-level issue. |
+| Color contrast — feedback banner text (`--good`/`--bad` on their `-wash` backgrounds, 14px/600 weight → counts as normal text, needs 4.5:1) | ✅ **Fixed.** Darkened `--good` (#2f9e50 → #247b3e, 4.65:1) and `--bad` (#e0563e → #c63820, 4.52:1) in light mode (`css/tokens.css`). Dark mode already passed and is unchanged. Discussed with Wil before touching the shared tokens file. |
+| Color contrast — `.btn-primary` (white text on background, 15px/700 — doesn't meet the 18.66px bold threshold for "large text", needs 4.5:1) | ✅ **Fixed.** `--accent`/`--accent-deep` swap lightness direction between themes (lighter in dark mode, for text emphasis), so neither cleared 4.5:1 for white text in both themes. Added a theme-invariant `--accent-contrast` (#2c8256, 4.74:1 in both themes) and pointed `.btn-primary`'s background/shadow at it instead — `--accent`/`--accent-deep` are untouched elsewhere (progress fill, word color, borders, focus ring). |
 | Color contrast — completion score, XP pill, body text | ✅ Pass (4.5:1+ in both themes) |
 
 ## Known blockers before this is demoable
 
 1. **P0 — Check button never enables after selecting a choice** (`js/ui/question-screen.js`). Nothing else can be demoed until this lands.
-2. **P0 — Choice/progress state styling missing** (same file): selected/correct/wrong choice classes, progress bar fill and count. Also blocks auditing contrast on `.choice--correct`/`.choice--wrong`.
-3. **Accessibility — `--good`/`--bad` and `.btn-primary` fail WCAG AA contrast in light mode** (`.btn-primary` fails in dark mode too). Needs a token adjustment in `css/tokens.css` — raising this with the team since it's shared, not scoped to one owner's file.
+2. **P0 — Choice/progress state styling missing** (same file): selected/correct/wrong choice classes, progress bar fill and count. Also blocks auditing contrast on `.choice--correct`/`.choice--wrong` once implemented.
 
 ## Retest once blockers land
 
