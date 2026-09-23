@@ -68,6 +68,7 @@ import { createLessonState } from "../js/state/lesson-state.js";
 export { QUESTIONS };
 
 let moduleCounter = 0;
+const runStamp = Date.now(); // a new URL every run, so the browser cache never serves an old copy
 
 /**
  * A fresh copy of question-screen.js. The module keeps a little state
@@ -75,7 +76,7 @@ let moduleCounter = 0;
  * loads its own copy to stay independent.
  */
 export function freshQuestionScreen() {
-  return import(`../js/ui/question-screen.js?fresh=${++moduleCounter}`);
+  return import(`../js/ui/question-screen.js?fresh=${runStamp}-${++moduleCounter}`);
 }
 
 export const noHandlers = { onSelectChoice() {}, onCheck() {} };
