@@ -4,7 +4,7 @@
  * app at real phone widths.
  */
 
-import { test, todo, assert, eq, QUESTIONS, loadApp, answerCurrent, indexes } from "./harness.js";
+import { test, assert, eq, QUESTIONS, loadApp, answerCurrent, indexes } from "./harness.js";
 
 const WIDTHS = [320, 360, 414, 768, 1280];
 const MIN_TARGET = 44; // px; the common touch-target guideline (WCAG's own minimum is 24)
@@ -71,13 +71,22 @@ test("[layout 360x640] the Continue button is visible without scrolling after a 
   }
 });
 
-todo("[layout] text grows when the learner raises the browser's default font size", async () => {
-  const app = await loadApp(390, 700);
+test("[layout, WCAG 1.4.4] text grows with the browser's default font size, and the screen still fits at 320px", async () => {
+  const app = await loadApp(320, 700);
   try {
-    const before = parseFloat(app.win.getComputedStyle(app.q(".choice")).fontSize);
+    const sizeOf = (selector) => parseFloat(app.win.getComputedStyle(app.q(selector)).fontSize);
+    const selectors = [".question-prompt", ".choice", ".progress-count"];
+    const before = selectors.map(sizeOf);
     app.doc.documentElement.style.fontSize = "200%";
-    const after = parseFloat(app.win.getComputedStyle(app.q(".choice")).fontSize);
-    assert(after > before, `choice text stays ${after}px; sizes in px ignore the setting`);
+    const after = selectors.map(sizeOf);
+    selectors.forEach((selector, i) => assert(after[i] > before[i], `${selector} stays ${after[i]}px; a size in px ignores the setting`));
+
+    const problems = measure(app, "question at 200% text");
+    const { wrong } = indexes(QUESTIONS[0]);
+    app.qa(".choice")[wrong].click();
+    app.q("[data-role='check-btn']").click();
+    problems.push(...measure(app, "feedback at 200% text"));
+    eq(problems.join("; "), "");
   } finally {
     app.close();
   }

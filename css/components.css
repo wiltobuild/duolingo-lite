@@ -58,7 +58,7 @@
 
 .progress-count {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 0.75rem; /* rem, not px, so it follows the browser's font size setting */
   font-weight: 700;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
@@ -68,7 +68,7 @@
 
 /* Question prompt + answer choices — owner: Valerie (question screen) */
 .question-prompt {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink-soft);
   font-weight: 500;
 }
@@ -93,7 +93,7 @@
   gap: var(--space-3);
   text-align: left;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--ink);
   background: var(--surface);
   border: 1.5px solid var(--line-strong);
