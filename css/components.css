@@ -117,6 +117,11 @@
   cursor: default;
 }
 
+/* base.css shrinks the focus ring's radius to 4px; keep the choice's own */
+.choice:focus-visible {
+  border-radius: var(--radius-md);
+}
+
 .choice--selected {
   border-color: var(--accent);
   background: var(--accent-wash);

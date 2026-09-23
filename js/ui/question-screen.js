@@ -73,6 +73,30 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
   });
 
   container.querySelector("[data-role='check-btn']").addEventListener("click", onCheck);
+
+  restoreFocus(state, container);
+}
+
+// app.js rebuilds the whole screen on every state change, which throws
+// away whichever button had keyboard focus. Put focus back where a
+// keyboard user would expect it. Skipped on the first render so the page
+// does not steal focus on load.
+let lastRender = null;
+
+function restoreFocus(state, container) {
+  const previous = lastRender;
+  lastRender = { index: state.index, selectedChoice: state.selectedChoice, checked: state.checked };
+  if (previous === null) return;
+
+  let target = null;
+  if (state.checked && !previous.checked) {
+    target = container.querySelector("[data-role='check-btn']"); // becomes Continue
+  } else if (state.index !== previous.index) {
+    target = container.querySelector("[data-choice-index]"); // first choice of the next question
+  } else if (state.selectedChoice !== previous.selectedChoice) {
+    target = container.querySelector(`[data-choice-index='${state.selectedChoice}']`);
+  }
+  if (target) target.focus();
 }
 
 // app.js rebuilds the whole screen on every state change, so each new
