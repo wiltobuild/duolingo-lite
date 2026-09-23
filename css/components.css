@@ -50,7 +50,7 @@
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: var(--accent);
+  background: var(--accent-contrast);
   border-radius: var(--radius-pill);
   /* Under 400ms (Doherty Threshold) so the fill finishes with the feedback */
   transition: width 0.3s ease-out;

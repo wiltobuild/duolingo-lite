@@ -92,6 +92,25 @@ test("[contrast] every text style on the question screen meets WCAG AA in both t
   assert(failures.length === 0, "\n        " + failures.join("\n        "));
 });
 
+test("[contrast, WCAG 1.4.11] the progress fill and the focus ring stand out at 3:1 in both themes", async () => {
+  const { renderQuestionScreen } = await freshQuestionScreen();
+  const failures = [];
+
+  await withThemes(async (theme) => {
+    const c = mount();
+    renderQuestionScreen(stateFor({ index: 2 }), c, noHandlers);
+    const fill = channels(getComputedStyle(c.querySelector(".progress-fill")).backgroundColor);
+    const track = channels(getComputedStyle(c.querySelector(".progress-track")).backgroundColor);
+    check(theme, "progress fill against its track", ratio(fill, track), 3, failures);
+
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    const ring = [1, 3, 5].map((i) => parseInt(accent.slice(i, i + 2), 16));
+    check(theme, "focus ring against the card", ratio(ring, backgroundOf(c)), 3, failures);
+  });
+
+  assert(failures.length === 0, "\n        " + failures.join("\n        "));
+});
+
 // Advisory: WCAG 1.4.11 asks for 3:1 on visual information needed to find a
 // control. The labeled buttons are identifiable by their text, so this is a
 // design choice for the team, not a hard failure.
