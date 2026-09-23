@@ -8,4 +8,6 @@
 
 import { run } from "./harness.js";
 
+import "./suite-component.js";
+
 await run();
