@@ -55,6 +55,8 @@ screen uses them:
 - `.app-shell`, `.card`, `.card__header`, `.card__body` — page/card layout
 - `.progress-row`, `.progress-track`, `.progress-fill`, `.progress-count` — progress bar (Valerie)
 - `.question-prompt`, `.question-word`, `.choice-list`, `.choice` (+ `--selected` / `--correct` / `--wrong` modifiers) — question screen (Valerie)
+- `.choice__mark` — the symbol slot at the start of a choice (● selected, ✓ correct, ✕ wrong), so state never rests on color alone (Valerie)
+- `.visually-hidden` — text for screen readers only, e.g. "(correct answer)" on a choice (shared utility)
 - `.feedback-banner` (+ `--correct` / `--incorrect` modifiers) — feedback (Priscilla)
 - `.btn-primary` — the Check / Continue / Try again button, shared
 - `.completion`, `.completion__score`, `.xp-pill` — completion screen (Priscilla)
