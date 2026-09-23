@@ -1,0 +1,724 @@
+<title>Lesson Clone PRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#faf8f3;
+  --surface:#ffffff;
+  --surface-2:#f3f0e7;
+  --ink:#1a2420;
+  --ink-soft:#4b574f;
+  --ink-faint:#7c877e;
+  --line:#e3ded1;
+  --line-strong:#d3ccbb;
+  --accent:#37a06a;
+  --accent-deep:#2b7f54;
+  --accent-wash:#e7f3ec;
+  --good:#2f9e50;
+  --good-wash:#e6f4ea;
+  --bad:#e0563e;
+  --bad-wash:#fceae5;
+  --xp:#f2b01e;
+  --xp-wash:#fcf1d6;
+  --p0:#e0563e;
+  --p1:#e0902e;
+  --p2:#7c877e;
+  --shadow:0 1px 2px rgba(26,36,32,.05),0 8px 24px -12px rgba(26,36,32,.18);
+  --shadow-lift:0 2px 4px rgba(26,36,32,.06),0 18px 40px -18px rgba(26,36,32,.28);
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+  --paper:#12181a;
+  --surface:#1a2225;
+  --surface-2:#212b2e;
+  --ink:#eef2ec;
+  --ink-soft:#aab4ad;
+  --ink-faint:#7c877e;
+  --line:#2c3639;
+  --line-strong:#3a4649;
+  --accent:#4fc088;
+  --accent-deep:#6fd0a0;
+  --accent-wash:#182c23;
+  --good:#4fc088;
+  --good-wash:#152a1f;
+  --bad:#f0745c;
+  --bad-wash:#2e1c19;
+  --xp:#f6c34e;
+  --xp-wash:#2c2413;
+  --p0:#f0745c;
+  --p1:#f0a94e;
+  --p2:#8b968d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.35),0 20px 46px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12181a;
+  --surface:#1a2225;
+  --surface-2:#212b2e;
+  --ink:#eef2ec;
+  --ink-soft:#aab4ad;
+  --ink-faint:#7c877e;
+  --line:#2c3639;
+  --line-strong:#3a4649;
+  --accent:#4fc088;
+  --accent-deep:#6fd0a0;
+  --accent-wash:#182c23;
+  --good:#4fc088;
+  --good-wash:#152a1f;
+  --bad:#f0745c;
+  --bad-wash:#2e1c19;
+  --xp:#f6c34e;
+  --xp-wash:#2c2413;
+  --p0:#f0745c;
+  --p1:#f0a94e;
+  --p2:#8b968d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.35),0 20px 46px -18px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Instrument Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Instrument Sans",sans-serif;line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.mono{font-family:"Space Mono",ui-monospace,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+
+/* ---- header ---- */
+.topbar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{display:flex;align-items:center;gap:14px;padding-block:11px}
+.tb-badge{width:34px;height:34px;border-radius:10px;background:#7c4dff;display:grid;place-items:center;color:#fff;font-family:"Bricolage Grotesque";font-weight:800;font-size:20px;flex:none;box-shadow:0 2px 0 #5e35d6}
+.tb-title{font-family:"Bricolage Grotesque";font-weight:700;font-size:15px;letter-spacing:-.01em}
+.tb-sub{font-size:12px;color:var(--ink-faint);margin-top:-2px}
+.tb-spacer{flex:1}
+.tb-tag{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);border:1px solid var(--line-strong);border-radius:100px;padding:4px 11px}
+@media(max-width:640px){.tb-tag{display:none}}
+.themebtn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-soft);width:34px;height:34px;border-radius:9px;cursor:pointer;display:grid;place-items:center;font-size:15px}
+.themebtn:hover{color:var(--ink);border-color:var(--ink-faint)}
+
+/* ---- hero ---- */
+.hero{padding-block:52px 30px}
+.eyebrow{font-family:"Space Mono";font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep);font-weight:700}
+.hero h1{font-size:clamp(2.6rem,7vw,4.4rem);font-weight:800;margin-top:16px;max-width:14ch}
+.hero-lead{font-size:clamp(1.05rem,2.3vw,1.28rem);color:var(--ink-soft);max-width:52ch;margin-top:20px}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.meta-item .k{font-family:"Space Mono";font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+.meta-item .v{font-weight:600;font-size:14.5px}
+
+.hero-grid{display:grid;grid-template-columns:1fr 380px;gap:34px;align-items:start;margin-top:4px}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}}
+
+/* ---- demo card ---- */
+.demo{
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow-lift);overflow:hidden;position:sticky;top:80px;
+}
+.demo-head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;background:var(--surface-2)}
+.demo-dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.demo-label{font-family:"Space Mono";font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+.demo-live{margin-left:auto;font-size:10.5px;font-family:"Space Mono";color:var(--ink-faint);display:flex;align-items:center;gap:5px}
+.demo-live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 var(--good);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 60%,transparent)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.demo-body{padding:20px 18px 22px}
+.pbar-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.pbar-restart{border:none;background:none;color:var(--ink-faint);cursor:pointer;font-size:17px;padding:2px 4px;line-height:1}
+.pbar-restart:hover{color:var(--accent-deep)}
+.pbar{flex:1;height:12px;background:var(--surface-2);border-radius:100px;overflow:hidden;border:1px solid var(--line)}
+.pbar-fill{height:100%;width:0;background:var(--accent);border-radius:100px;transition:width .45s cubic-bezier(.34,1.4,.5,1)}
+.pcount{font-family:"Space Mono";font-size:12px;color:var(--ink-soft);font-weight:700;flex:none;min-width:30px;text-align:right}
+.q-prompt{font-size:13px;color:var(--ink-faint);font-weight:500}
+.q-word{font-family:"Bricolage Grotesque";font-weight:800;font-size:2rem;margin:2px 0 18px;letter-spacing:-.02em}
+.q-word span{color:var(--accent-deep)}
+.choices{display:flex;flex-direction:column;gap:9px}
+.choice{
+  text-align:left;font:inherit;font-weight:600;font-size:15px;color:var(--ink);
+  background:var(--surface);border:1.5px solid var(--line-strong);border-bottom-width:3px;
+  border-radius:13px;padding:12px 15px;cursor:pointer;transition:transform .06s,border-color .15s,background .15s;
+  display:flex;align-items:center;gap:11px;
+}
+.choice:hover:not(:disabled){border-color:var(--accent);background:var(--accent-wash)}
+.choice:active:not(:disabled){transform:translateY(1px)}
+.choice .kbd{font-family:"Space Mono";font-size:11px;width:20px;height:20px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-faint);flex:none}
+.choice.sel{border-color:var(--accent);background:var(--accent-wash)}
+.choice.correct{border-color:var(--good);background:var(--good-wash);color:var(--good)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-wash);color:var(--bad)}
+.choice:disabled{cursor:default}
+.feedback{margin-top:16px;border-radius:13px;padding:13px 15px;font-weight:600;font-size:14px;display:none;align-items:flex-start;gap:10px}
+.feedback.show{display:flex}
+.feedback.ok{background:var(--good-wash);color:var(--good)}
+.feedback.no{background:var(--bad-wash);color:var(--bad)}
+.feedback .fi{font-size:16px;line-height:1.3}
+.feedback small{display:block;font-weight:500;color:var(--ink-soft);margin-top:2px}
+.cta{width:100%;margin-top:16px;font:inherit;font-weight:700;font-size:15px;border:none;border-radius:13px;padding:13px;cursor:pointer;color:#fff;background:var(--accent);box-shadow:0 3px 0 var(--accent-deep);transition:transform .06s,opacity .15s;letter-spacing:.01em}
+.cta:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 var(--accent-deep)}
+.cta:disabled{background:var(--surface-2);color:var(--ink-faint);box-shadow:0 3px 0 var(--line-strong);cursor:not-allowed}
+.done{text-align:center;padding:8px 4px 4px}
+.done .trophy{font-size:44px}
+.done h3{font-size:1.7rem;margin:8px 0 2px}
+.done .score{font-family:"Space Mono";font-size:2.6rem;font-weight:700;color:var(--accent-deep);margin:6px 0}
+.done .xp{display:inline-flex;align-items:center;gap:7px;background:var(--xp-wash);color:#8a6a12;font-weight:700;font-size:13px;padding:6px 13px;border-radius:100px;margin-top:6px}
+:root[data-theme="dark"] .done .xp,:root:not([data-theme="light"]) .done .xp{color:var(--xp)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .done .xp{color:var(--xp)}}
+.demo-foot{font-size:11px;color:var(--ink-faint);text-align:center;padding:0 18px 16px;line-height:1.4}
+
+/* ---- sections ---- */
+section{padding-block:38px}
+.sec-num{font-family:"Space Mono";font-weight:700;font-size:13px;color:var(--accent-deep);letter-spacing:.05em}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;border-top:2px solid var(--ink);padding-top:14px}
+.sec-head h2{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:700}
+.sec-intro{color:var(--ink-soft);max-width:64ch;font-size:16px;margin-bottom:26px}
+
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.cols-2{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+.card h3{font-size:1.15rem;margin-bottom:6px}
+.card h4{font-size:.95rem;margin-bottom:10px}
+.subtle{color:var(--ink-soft)}
+
+.kicker{font-family:"Space Mono";font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:14px}
+
+/* need list */
+.needs{display:flex;flex-direction:column;gap:14px}
+.need{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+.need .who{font-family:"Space Mono";font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-deep);background:var(--accent-wash);border-radius:8px;padding:5px 9px;white-space:nowrap;flex:none;margin-top:2px}
+.need p{font-size:15.5px}
+
+/* value trio */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:720px){.trio{grid-template-columns:1fr}}
+.vp{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.vp::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--vpc,var(--accent))}
+.vp .emoji{font-size:26px}
+.vp .tag{font-family:"Space Mono";font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--vpc,var(--accent-deep));margin:10px 0 4px}
+.vp h3{font-size:1.15rem;margin-bottom:8px}
+.vp p{font-size:14.5px;color:var(--ink-soft)}
+
+/* goals/nongoals */
+.gng{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.gng{grid-template-columns:1fr}}
+.gng ul{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:11px}
+.gng li{display:flex;gap:11px;font-size:15px;align-items:flex-start}
+.gng li .m{flex:none;font-weight:800;margin-top:1px}
+.goal li .m{color:var(--good)}
+.nongoal li .m{color:var(--bad)}
+.nongoal{background:var(--surface-2)}
+
+/* metrics table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+thead th{font-family:"Space Mono";font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-align:left;color:var(--ink-faint);font-weight:700;padding:14px 18px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+tbody td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+td.goal-c{font-weight:700;font-family:"Bricolage Grotesque"}
+td.target-c{font-weight:600;color:var(--accent-deep)}
+.chk{font-family:"Space Mono";font-weight:700;color:var(--good);white-space:nowrap}
+
+/* priority legend */
+.plegend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.pchip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 13px 6px 6px}
+.ptag{font-family:"Space Mono";font-weight:700;font-size:11px;color:#fff;border-radius:100px;padding:3px 8px;letter-spacing:.03em}
+.ptag.P0{background:var(--p0)}.ptag.P1{background:var(--p1)}.ptag.P2{background:var(--p2)}
+
+/* journeys */
+.journey{margin-bottom:26px}
+.journey-head{display:flex;gap:13px;align-items:flex-start;margin-bottom:6px}
+.jnum{flex:none;width:30px;height:30px;border-radius:9px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:15px}
+.journey-head h3{font-size:1.2rem}
+.journey-ctx{color:var(--ink-soft);font-size:14.5px;margin:2px 0 18px;padding-left:43px}
+@media(max-width:560px){.journey-ctx{padding-left:0}}
+.subj{margin-bottom:16px}
+.subj-title{font-family:"Space Mono";font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.subj-title::before{content:"";width:16px;height:2px;background:var(--accent);border-radius:2px}
+.reqs{display:flex;flex-direction:column;gap:8px}
+.req{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 15px;box-shadow:var(--shadow)}
+.req .ptag{flex:none;margin-top:1px}
+.req p{font-size:15px}
+.req.is-p0{border-left:3px solid var(--p0)}
+.req.is-p1{border-left:3px solid var(--p1)}
+.req.is-p2{border-left:3px solid var(--p2)}
+
+/* appendix */
+.vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:4px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:center;box-shadow:var(--shadow);transition:transform .12s}
+.vcard:hover{transform:translateY(-3px)}
+.vcard .es{font-family:"Bricolage Grotesque";font-weight:800;font-size:1.5rem;color:var(--accent-deep)}
+.vcard .arrow{color:var(--ink-faint);font-size:13px;margin:3px 0}
+.vcard .en{font-weight:600;font-size:15px}
+
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:720px){.roles{grid-template-columns:1fr}}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.role .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-family:"Bricolage Grotesque";font-weight:800;color:#fff;font-size:17px;margin-bottom:12px}
+.role h4{font-size:1.05rem}
+.role .rrole{font-size:12px;color:var(--ink-faint);font-family:"Space Mono";text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+.role ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:5px}
+.role li{font-size:14px;color:var(--ink-soft)}
+
+/* timeline */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.day{display:grid;grid-template-columns:88px 1fr;gap:18px;padding:15px 0;border-top:1px solid var(--line);align-items:start}
+.day:first-child{border-top:none}
+.day .dnum{font-family:"Space Mono";font-weight:700;font-size:12px;color:var(--accent-deep);background:var(--accent-wash);border-radius:8px;padding:6px 8px;text-align:center;text-transform:uppercase;letter-spacing:.03em}
+.day .dtext{font-size:15px}
+.day.gate .dnum{color:#8a6a12;background:var(--xp-wash)}
+:root[data-theme="dark"] .day.gate .dnum{color:var(--xp)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .day.gate .dnum{color:var(--xp)}}
+
+.callout{background:var(--accent-wash);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));border-radius:16px;padding:20px 22px;display:flex;gap:15px;align-items:flex-start}
+.callout .ci{font-size:22px;flex:none}
+.callout h4{font-size:1rem;margin-bottom:4px}
+.callout p{font-size:14.5px;color:var(--ink-soft)}
+
+.deck{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.deck{grid-template-columns:1fr}}
+
+footer{padding-block:40px 60px;border-top:1px solid var(--line);margin-top:20px;color:var(--ink-faint);font-size:13px;text-align:center}
+footer .fmark{font-family:"Bricolage Grotesque";font-weight:800;color:var(--ink);font-size:15px}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="tb-badge">P</div>
+    <div>
+      <div class="tb-title">Lesson Clone</div>
+      <div class="tb-sub">Product Requirements Document</div>
+    </div>
+    <div class="tb-spacer"></div>
+    <span class="tb-tag">One&nbsp;Week&nbsp;Build</span>
+    <button class="themebtn" id="themeBtn" aria-label="Toggle light and dark theme">◐</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">PRD · Interactive Lesson Engine</div>
+    <div class="hero-grid">
+      <div>
+        <h1>A five-question Spanish lesson that actually checks your answer.</h1>
+        <p class="hero-lead">Beginning learners need a short, clear way to practice a few words and see whether they understood them. A static vocabulary list can't check an answer or show what to correct. This one-week build tests the value of a complete interactive practice loop — a choice, an answer check, and instant feedback — end to end.</p>
+        <div class="meta-row">
+          <div class="meta-item"><div class="k">Owner</div><div class="v">Three-person team</div></div>
+          <div class="meta-item"><div class="k">Timeline</div><div class="v">One week</div></div>
+          <div class="meta-item"><div class="k">Date</div><div class="v">September 22, 2026</div></div>
+          <div class="meta-item"><div class="k">Status</div><div class="v">Scoped for build</div></div>
+        </div>
+      </div>
+
+      <!-- LIVE DEMO -->
+      <div class="demo" aria-label="Interactive lesson demo">
+        <div class="demo-head">
+          <span class="demo-dot"></span>
+          <span class="demo-label">Try the loop</span>
+          <span class="demo-live">demo</span>
+        </div>
+        <div class="demo-body" id="demoBody">
+          <div class="pbar-row">
+            <button class="pbar-restart" id="restart" title="Restart lesson" aria-label="Restart lesson" hidden>↺</button>
+            <div class="pbar"><div class="pbar-fill" id="pfill"></div></div>
+            <span class="pcount mono" id="pcount">0/5</span>
+          </div>
+          <div id="qView">
+            <p class="q-prompt">Which word means…</p>
+            <div class="q-word" id="qWord"><span></span></div>
+            <div class="choices" id="choices"></div>
+            <div class="feedback" id="feedback"><span class="fi"></span><span class="ftext"></span></div>
+            <button class="cta" id="cta" disabled>Check</button>
+          </div>
+        </div>
+        <div class="demo-foot">A working slice of the engine described below — the same loop, live.</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. PROBLEM -->
+  <section id="problem">
+    <div class="sec-head"><span class="sec-num">01</span><h2>The problem &amp; opportunity</h2></div>
+    <p class="sec-intro">One focused slice of Duolingo, feasible for three teammates in one week. The chosen slice is the interactive lesson engine; a small Spanish lesson supplies sample content to exercise it. These are project scope decisions — not findings from user interviews or usage data.</p>
+    <div class="cols-2">
+      <div class="card">
+        <div class="kicker">The opportunity</div>
+        <h3>Prove the core loop, not a course</h3>
+        <p class="subtle">Deliver a usable five-question Spanish lesson showing how an exercise engine turns a choice, an answer check, and instant feedback into a complete practice session — validating that a small interactive lesson is understandable and satisfying in a team demo.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Market context</div>
+        <h3>A free demo, not a business</h3>
+        <p class="subtle">Duolingo is the reference product — freemium, ad-supported, with paid subscriptions. This student clone is a free demo: monetization, ads, and subscriptions are out of scope. Success here means the lesson flow works, not market size or revenue.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- USERS -->
+  <section id="users">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Users &amp; needs</h2></div>
+    <div class="cols-2" style="margin-bottom:24px">
+      <div class="card">
+        <div class="kicker">Primary users</div>
+        <h3>Beginning Spanish learners</h3>
+        <p class="subtle">Who want a quick practice session with clear feedback.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Secondary users</div>
+        <h3>Teammates &amp; reviewers</h3>
+        <p class="subtle">Who run the demo and assess whether the lesson flow works end to end.</p>
+      </div>
+    </div>
+    <div class="needs">
+      <div class="need"><span class="who">Learner</span><p>“I need to answer one short question at a time, so I can focus on each word.”</p></div>
+      <div class="need"><span class="who">Learner</span><p>“I need immediate feedback and visible progress, so I know what I got right and how much remains.”</p></div>
+    </div>
+  </section>
+
+  <!-- SOLUTION + VALUE -->
+  <section id="solution">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Proposed solution</h2></div>
+    <p class="sec-intro">A web-based interactive lesson. A learner starts a small Spanish vocabulary lesson, chooses an answer for each question, checks it, and receives immediate correct-or-incorrect feedback. A progress bar advances as questions complete. After the last question, a completion summary appears and offers a replay.</p>
+
+    <div class="kicker">The three MVP value props</div>
+    <p class="sec-intro" style="margin-bottom:16px;font-size:14.5px">Starting and finishing one lesson is the precondition everything else depends on — not a separable value prop, so it isn't listed as one below. The honest Vitamin is the XP reward: genuine delight, not urgent, and the one piece explicitly scoped to be cut first if time runs short.</p>
+    <div class="trio">
+      <div class="vp" style="--vpc:var(--good)">
+        <div class="emoji">🥕</div>
+        <div class="tag">The Vitamin · wouldn't be missed</div>
+        <h3>A small reward</h3>
+        <p>A bit of XP on completion — genuine delight, not urgent, and the first thing cut if the week runs short.</p>
+      </div>
+      <div class="vp" style="--vpc:var(--bad)">
+        <div class="emoji">💊</div>
+        <div class="tag">The Painkiller · the core pain</div>
+        <h3>Checked instantly</h3>
+        <p>Each answer is checked immediately, with the correct answer shown after a mistake.</p>
+      </div>
+      <div class="vp" style="--vpc:var(--xp)">
+        <div class="emoji">⚡</div>
+        <div class="tag">The Steroid · memorable moment</div>
+        <h3>Feels complete</h3>
+        <p>A live progress bar and end summary make the five-question session feel whole.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOALS -->
+  <section id="goals">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Goals &amp; non-goals</h2></div>
+    <div class="gng">
+      <div class="card goal">
+        <h4>✓ Goals</h4>
+        <ul>
+          <li><span class="m">→</span><span>A learner can complete the sample lesson from start to finish without assistance.</span></li>
+          <li><span class="m">→</span><span>A learner receives accurate, understandable feedback on every answer.</span></li>
+          <li><span class="m">→</span><span>The three-person team can demo a stable build by the end of the week.</span></li>
+        </ul>
+      </div>
+      <div class="card nongoal">
+        <h4>✕ Non-goals</h4>
+        <ul>
+          <li><span class="m">×</span><span>Full courses, speech recognition, adaptive difficulty, accounts, and social features.</span></li>
+          <li><span class="m">×</span><span>Ads, payments, and subscriptions.</span></li>
+          <li><span class="m">×</span><span>Duolingo branding or copied content.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section id="metrics">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Success metrics</h2></div>
+    <p class="sec-intro">Small build, measurable outcomes — verified by hand across a manual demo checklist.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Goal</th><th>Signal</th><th>Metric</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="goal-c">Finish lesson</td>
+            <td>Complete all five questions</td>
+            <td class="subtle">Manual demo checklist across three browsers or devices</td>
+            <td class="target-c"><span class="chk">3 / 3</span> demo runs reach the summary</td>
+          </tr>
+          <tr>
+            <td class="goal-c">Accurate feedback</td>
+            <td>Correct &amp; incorrect choices score as expected</td>
+            <td class="subtle">Check all five correct answers and one wrong answer per item</td>
+            <td class="target-c"><span class="chk">10 / 10</span> checks show the right feedback</td>
+          </tr>
+          <tr>
+            <td class="goal-c">Stable team demo</td>
+            <td>All three teammates demonstrate a contribution</td>
+            <td class="subtle">Review merged work and run shared acceptance checklist</td>
+            <td class="target-c"><span class="chk">3 / 3</span> workstreams merged; no blocking defects</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- REQUIREMENTS -->
+  <section id="requirements">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Requirements</h2></div>
+    <p class="sec-intro">Grouped by user journey and sub-journey. Every requirement carries a priority — build P0 first, then earn the rest.</p>
+    <div class="plegend">
+      <span class="pchip"><span class="ptag P0">P0</span> Must ship — the core loop</span>
+      <span class="pchip"><span class="ptag P1">P1</span> Should ship — quality &amp; resilience</span>
+      <span class="pchip"><span class="ptag P2">P2</span> Nice to have — only if P0 passes</span>
+    </div>
+
+    <!-- Journey 1 -->
+    <div class="journey">
+      <div class="journey-head"><span class="jnum">1</span><h3>A beginner completes a Spanish practice lesson</h3></div>
+      <p class="journey-ctx">Optimize for a single complete lesson in one short session. The five sample questions are content used to exercise the engine.</p>
+
+      <div class="subj">
+        <div class="subj-title">Start and answer a question</div>
+        <div class="reqs">
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Start the sample lesson without creating an account.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>View one multiple-choice Spanish vocabulary question and its answer choices at a time.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Select one choice and submit it for checking.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Change the selected choice before submitting; the check action is disabled until a choice is selected.</p></div>
+          <div class="req is-p1"><span class="ptag P1">P1</span><p>Use the lesson on a phone-sized or desktop screen.</p></div>
+        </div>
+      </div>
+      <div class="subj">
+        <div class="subj-title">Receive feedback and advance</div>
+        <div class="reqs">
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>See immediate correct or incorrect feedback after checking an answer.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>See the correct answer after an incorrect selection.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Advance only after checking the current answer; submitting twice does not change the score.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>See a progress bar and question count update after each completed question.</p></div>
+        </div>
+      </div>
+      <div class="subj">
+        <div class="subj-title">Finish and replay</div>
+        <div class="reqs">
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>See a completion screen with the number correct out of five.</p></div>
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Restart the lesson from question one with a reset score and progress bar.</p></div>
+          <div class="req is-p2"><span class="ptag P2">P2</span><p>See a small XP reward for completing the lesson.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Journey 2 -->
+    <div class="journey">
+      <div class="journey-head"><span class="jnum">2</span><h3>A learner returns after leaving the lesson</h3></div>
+      <p class="journey-ctx">Returning is useful but secondary to a reliable full session. Saved progress is optional and should stay on the same device.</p>
+
+      <div class="subj">
+        <div class="subj-title">Resume a lesson</div>
+        <div class="reqs">
+          <div class="req is-p2"><span class="ptag P2">P2</span><p>Resume an unfinished lesson after refreshing the same browser on the same device.</p></div>
+          <div class="req is-p2"><span class="ptag P2">P2</span><p>Reset saved progress and start over.</p></div>
+          <div class="req is-p2"><span class="ptag P2">P2</span><p>See earned XP retained locally.</p></div>
+        </div>
+      </div>
+      <div class="subj">
+        <div class="subj-title">Handle an interruption</div>
+        <div class="reqs">
+          <div class="req is-p0"><span class="ptag P0">P0</span><p>Refresh or reopen the demo and start a fresh lesson without a broken screen.</p></div>
+          <div class="req is-p1"><span class="ptag P1">P1</span><p>See a clear loading or error state if the lesson cannot be displayed.</p></div>
+          <div class="req is-p2"><span class="ptag P2">P2</span><p>Continue from the saved question.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPENDIX -->
+  <section id="appendix">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Appendix</h2></div>
+
+    <div class="kicker">Sample lesson — beginner Spanish vocabulary</div>
+    <p class="sec-intro" style="margin-bottom:14px">Five multiple-choice prompts, each with four original answer choices and one correct answer.</p>
+    <div class="vocab">
+      <div class="vcard"><div class="es">hola</div><div class="arrow">→</div><div class="en">hello</div></div>
+      <div class="vcard"><div class="es">gracias</div><div class="arrow">→</div><div class="en">thank you</div></div>
+      <div class="vcard"><div class="es">agua</div><div class="arrow">→</div><div class="en">water</div></div>
+      <div class="vcard"><div class="es">gato</div><div class="arrow">→</div><div class="en">cat</div></div>
+      <div class="vcard"><div class="es">adiós</div><div class="arrow">→</div><div class="en">goodbye</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:26px">
+      <span class="ci">✅</span>
+      <div>
+        <h4>Acceptance criteria</h4>
+        <p>Exactly five questions, each with one correct answer. The score increments once per correct submission. The progress bar moves from 0/5 to 5/5. The completion screen shows the final score, and replay resets the session. Check mouse, keyboard, and small-screen use.</p>
+      </div>
+    </div>
+
+    <div class="kicker" style="margin-top:34px">Team ownership</div>
+    <div class="roles">
+      <div class="role">
+        <div class="av" style="background:var(--accent)">W</div>
+        <h4>Wil</h4>
+        <div class="rrole">Project lead</div>
+        <ul>
+          <li>Lesson state &amp; answer checking</li>
+          <li>Integration &amp; final release</li>
+          <li>Pairs on integration as needed</li>
+        </ul>
+      </div>
+      <div class="role">
+        <div class="av" style="background:#3d7fd6">V</div>
+        <h4>Valerie</h4>
+        <div class="rrole">Interface</div>
+        <ul>
+          <li>Question screen &amp; choice controls</li>
+          <li>Progress bar &amp; responsive layout</li>
+          <li>Ships code, reviews a peer, demos</li>
+        </ul>
+      </div>
+      <div class="role">
+        <div class="av" style="background:#c9553f">P</div>
+        <h4>Priscilla</h4>
+        <div class="rrole">Content &amp; QA</div>
+        <ul>
+          <li>Spanish content, feedback &amp; completion screens</li>
+          <li>Accessibility review</li>
+          <li>Demo test checklist</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="deck" style="margin-top:34px">
+      <div class="callout">
+        <span class="ci">🔗</span>
+        <div>
+          <h4>Dependency &amp; scope rule</h4>
+          <p>The shared question format — prompt, four choices, correct choice, optional explanation — is confirmed on Day 1 so all three workstreams can proceed. If time slips, cut XP and saved progress first; preserve the five-question core loop.</p>
+        </div>
+      </div>
+      <div class="callout" style="background:var(--surface);border-color:var(--line)">
+        <span class="ci">🧭</span>
+        <div>
+          <h4>Open decisions for the team</h4>
+          <p>Choose the frontend framework and hosting on Day 1, based on tools the team already knows. Confirm whether the completion screen shows only a score, or also brief explanations. These do not block the requirements above.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="fmark">Lesson Clone</div>
+  <p style="margin-top:6px">Product Requirements Document · One-week build · Three-person team · September 22, 2026</p>
+</footer>
+
+<script>
+(function(){
+  // theme toggle
+  var root=document.documentElement, tb=document.getElementById('themeBtn');
+  function cur(){var t=root.getAttribute('data-theme'); if(t)return t; return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+  tb.addEventListener('click',function(){root.setAttribute('data-theme', cur()==='dark'?'light':'dark');});
+
+  // lesson data — four original choices per prompt, one correct
+  var Q=[
+    {word:'hola',    correct:'hello',    choices:['hello','goodbye','please','sorry']},
+    {word:'gracias', correct:'thank you',choices:['excuse me','thank you','you’re welcome','good night']},
+    {word:'agua',    correct:'water',    choices:['bread','milk','water','fire']},
+    {word:'gato',    correct:'cat',      choices:['dog','cat','bird','horse']},
+    {word:'adiós', correct:'goodbye', choices:['hello','welcome','goodbye','thanks']}
+  ];
+  var i=0, score=0, selected=null, checked=false;
+  var qWord=document.getElementById('qWord'), choicesEl=document.getElementById('choices'),
+      cta=document.getElementById('cta'), fb=document.getElementById('feedback'),
+      pfill=document.getElementById('pfill'), pcount=document.getElementById('pcount'),
+      restart=document.getElementById('restart'), qView=document.getElementById('qView');
+
+  function shuffle(a){a=a.slice();for(var j=a.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1));var t=a[j];a[j]=a[k];a[k]=t;}return a;}
+  var order=[]; // shuffled choice order per question, fixed once rendered
+
+  function progress(){pfill.style.width=(i/Q.length*100)+'%';pcount.textContent=i+'/'+Q.length;}
+
+  function render(){
+    var q=Q[i]; selected=null; checked=false;
+    qWord.innerHTML='<span>'+q.word+'</span>';
+    order=shuffle(q.choices);
+    choicesEl.innerHTML='';
+    order.forEach(function(c,idx){
+      var b=document.createElement('button');
+      b.className='choice'; b.type='button';
+      b.innerHTML='<span class="kbd">'+(idx+1)+'</span>'+c;
+      b.addEventListener('click',function(){ if(checked)return; select(idx); });
+      choicesEl.appendChild(b);
+    });
+    fb.className='feedback';
+    cta.textContent='Check'; cta.disabled=true;
+    progress();
+  }
+  function select(idx){
+    selected=idx;
+    [].forEach.call(choicesEl.children,function(el,n){el.classList.toggle('sel',n===idx);});
+    cta.disabled=false;
+  }
+  function check(){
+    var q=Q[i], picked=order[selected], ok=(picked===q.correct);
+    checked=true;
+    [].forEach.call(choicesEl.children,function(el,n){
+      el.disabled=true;
+      if(order[n]===q.correct) el.classList.add('correct');
+      else if(n===selected) el.classList.add('wrong');
+      el.classList.remove('sel');
+    });
+    if(ok){score++;fb.className='feedback show ok';fb.querySelector('.fi').textContent='✓';fb.querySelector('.ftext').innerHTML='Correct!';}
+    else{fb.className='feedback show no';fb.querySelector('.fi').textContent='✕';fb.querySelector('.ftext').innerHTML='Not quite. <small>“'+q.word+'” means “'+q.correct+'.”</small>';}
+    cta.textContent = i===Q.length-1?'See results':'Continue';
+    cta.disabled=false;
+  }
+  function next(){
+    i++;
+    if(i>=Q.length){ progress(); finish(); return; }
+    render();
+  }
+  function finish(){
+    var xp = 10 + score*2;
+    qView.innerHTML =
+      '<div class="done">'+
+        '<div class="trophy">'+(score>=4?'🏆':score>=2?'🎉':'🌱')+'</div>'+
+        '<h3>Lesson complete</h3>'+
+        '<div class="score">'+score+' / '+Q.length+'</div>'+
+        '<p class="subtle" style="font-size:14px">words answered correctly</p>'+
+        '<div class="xp">⚡ +'+xp+' XP</div>'+
+      '</div>';
+    restart.hidden=false;
+  }
+  cta.addEventListener('click',function(){ if(!checked)check(); else next(); });
+  restart.addEventListener('click',function(){
+    i=0;score=0;
+    qView.innerHTML=''+
+      '<p class="q-prompt">Which word means…</p>'+
+      '<div class="q-word" id="qWord"><span></span></div>'+
+      '<div class="choices" id="choices"></div>'+
+      '<div class="feedback" id="feedback"><span class="fi"></span><span class="ftext"></span></div>'+
+      '<button class="cta" id="cta" disabled>Check</button>';
+    // rebind refreshed nodes
+    qWord=document.getElementById('qWord');choicesEl=document.getElementById('choices');
+    cta=document.getElementById('cta');fb=document.getElementById('feedback');
+    cta.addEventListener('click',function(){ if(!checked)check(); else next(); });
+    restart.hidden=true; render();
+  });
+
+  // keyboard: 1-4 select, Enter check/continue
+  document.addEventListener('keydown',function(e){
+    if(restart.hidden===false && qView.querySelector('.done')) return;
+    if(e.key>='1'&&e.key<='4'){var n=+e.key-1; if(!checked && n<(order.length)) select(n);}
+    else if(e.key==='Enter'){ if(!cta.disabled) cta.click(); }
+  });
+
+  render();
+})();
+</script>

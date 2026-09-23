@@ -1,45 +1,50 @@
 # Demo test checklist
 
 Owner: Priscilla. Run this end-to-end before any demo — golden path first,
-then edge cases. Status reflects the last run against `main` +
-`feature/feedback-completion`.
+then edge cases. Status reflects a full run against `main` after
+`feature/feedback-completion` and `feature/question-screen` merged.
 
 ## Golden path (all 5 questions, mixed correct/incorrect)
 
 | Step | Expected | Status |
 |---|---|---|
 | Load app | First question ("hola") renders, progress shows 0/5 | ✅ Pass |
-| Click a choice | Choice visually marked selected, Check button enables | ❌ **Fail — blocks the whole demo.** Check button stays `disabled` after selecting a choice. `question-screen.js` never clears the hardcoded `disabled` attribute (Valerie's open P0). |
-| Click Check (correct answer) | Feedback banner shows "Correct!", choice marked `.choice--correct` | ⚠️ Feedback banner logic verified correct in isolation (`renderFeedback`), but unreachable via UI until the above is fixed. Choice styling (`.choice--correct`/`--wrong`) is also Valerie's open P0. |
-| Click Check (incorrect answer) | Feedback banner reveals the correct answer, wrong choice marked `.choice--wrong` | ⚠️ Same as above — banner content verified correct, not reachable via UI yet |
-| Click Continue | Advances to next question, resets selection/checked state | Not tested — blocked by the above |
-| Progress bar | `.progress-fill` width and `.progress-count` (`n/5`) update each question | ❌ Fail — never updates from 0 (Valerie's open P0) |
-| After question 5 | Completion screen shows score `x / 5` and a restart button | ✅ Pass (verified via direct state manipulation — `completion-screen.js` is functional) |
+| Click a choice | Choice visually marked selected (`.choice--selected`), Check button enables | ✅ Pass |
+| Click Check (correct answer) | Feedback banner shows "Correct!", choice marked `.choice--correct` | ✅ Pass |
+| Click Check (incorrect answer) | Feedback banner reveals the correct answer, wrong choice marked `.choice--wrong`, correct choice marked `.choice--correct` | ✅ Pass |
+| Choices disabled after checking | All four choice buttons `disabled` once checked | ✅ Pass — confirmed via DOM inspection |
+| Click Check twice | Score doesn't change on the second click | ✅ Pass — button relabels to "Continue" after the first check, so there's no way to re-check from the UI |
+| Click Continue | Advances to next question, resets selection/checked state | ✅ Pass |
+| Progress bar | `.progress-fill` width and `.progress-count` (`n/5`) update each question | ✅ Pass |
+| After question 5 | Completion screen shows score `x / 5` and a restart button | ✅ Pass |
 | Click "Try again" | Returns to question 1 with score/progress reset | ✅ Pass |
+| Refresh mid-lesson | Fresh lesson loads, no broken screen | ✅ Pass |
+| Phone width (~375px) | No horizontal overflow, choices/progress bar readable | ✅ Pass |
+
+Full run: 5/5 questions answered (4 correct, 1 incorrect on purpose to
+exercise the wrong-answer path), completion screen showed `4 / 5`
+correctly, restart worked, no console errors at any point.
 
 ## Accessibility
-
-Audited what's currently reachable (static screens + globally-applied CSS).
-Answer-state styling (`.choice--correct/--wrong`) can't be audited yet — see
-blockers below.
 
 | Check | Status |
 |---|---|
 | Feedback banner announced to screen readers (`role="status"`, `aria-live="polite"`) | ✅ Pass |
-| Visible focus state on interactive elements (`:focus-visible` in base.css, not overridden anywhere) | ✅ Pass — confirmed live via Tab key, clear outline on choice buttons |
-| Reduced-motion respected | ✅ Pass — `@media (prefers-reduced-motion: reduce)` in base.css disables all transitions/animations globally; components.css has no motion outside that scope |
-| Color contrast — feedback banner text (`--good`/`--bad` on their `-wash` backgrounds, 14px/600 weight → counts as normal text, needs 4.5:1) | ✅ **Fixed.** Darkened `--good` (#2f9e50 → #247b3e, 4.65:1) and `--bad` (#e0563e → #c63820, 4.52:1) in light mode (`css/tokens.css`). Dark mode already passed and is unchanged. Discussed with Wil before touching the shared tokens file. |
-| Color contrast — `.btn-primary` (white text on background, 15px/700 — doesn't meet the 18.66px bold threshold for "large text", needs 4.5:1) | ✅ **Fixed.** `--accent`/`--accent-deep` swap lightness direction between themes (lighter in dark mode, for text emphasis), so neither cleared 4.5:1 for white text in both themes. Added a theme-invariant `--accent-contrast` (#2c8256, 4.74:1 in both themes) and pointed `.btn-primary`'s background/shadow at it instead — `--accent`/`--accent-deep` are untouched elsewhere (progress fill, word color, borders, focus ring). |
-| Color contrast — completion score, XP pill, body text | ✅ Pass (4.5:1+ in both themes) |
+| Progress bar has `role="progressbar"` + `aria-valuenow`/`aria-valuemax` | ✅ Pass |
+| Choice buttons expose selection via `aria-pressed` | ✅ Pass |
+| Visible focus state on interactive elements (`:focus-visible` in base.css, not overridden anywhere) | ✅ Pass — confirmed live via Tab key |
+| Keyboard focus preserved across re-renders (question screen rebuilds the DOM on every state change) | ✅ Pass — `restoreFocus()` in `question-screen.js` moves focus to the right element after selecting, checking, or advancing |
+| Reduced-motion respected | ✅ Pass — `@media (prefers-reduced-motion: reduce)` in base.css disables all transitions/animations globally |
+| Color contrast — feedback banner text, `.btn-primary`, completion score, XP pill | ✅ Pass (4.5:1+ in both themes — see `css/tokens.css` for the contrast-fix history) |
+| Completion screen announced to screen readers / focus moved on arrival | ⬜ Not yet done — no `aria-live`/focus management when the completion screen replaces the question screen |
 
-## Known blockers before this is demoable
+## Remaining polish (non-blocking)
 
-1. **P0 — Check button never enables after selecting a choice** (`js/ui/question-screen.js`). Nothing else can be demoed until this lands.
-2. **P0 — Choice/progress state styling missing** (same file): selected/correct/wrong choice classes, progress bar fill and count. Also blocks auditing contrast on `.choice--correct`/`.choice--wrong` once implemented.
+1. Completion screen: no screen-reader announcement or focus move when it appears (see Accessibility table above).
+2. XP reward pill (P2) — correctly deprioritized per the PRD; only build if everything else above stays green.
 
-## Retest once blockers land
+## Retest triggers
 
-Re-run the full golden path above via actual clicks (not direct state
-injection) once `question-screen.js`'s P0s are merged, and confirm the
-feedback banner + completion screen behave the same as the isolated
-tests above.
+Re-run the full golden path above whenever `js/state/lesson-state.js`,
+`js/ui/question-screen.js`, `js/ui/feedback.js`, or
+`js/ui/completion-screen.js` change.
