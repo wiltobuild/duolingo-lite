@@ -67,6 +67,7 @@ test("[golden path] five questions, mixed answers: every step shows the right th
       }
       eq(app.qa(".choice")[correct].classList.contains("choice--correct"), true, "right answer marked");
       assert(app.qa(".choice").every((b) => b.disabled), "choices locked after checking");
+      eq(s.count, `${i + 1}/5`, `question ${i + 1}: the bar fills when the answer is checked`);
       eq(s.checkLabel, i === 4 ? "See results" : "Continue");
       eq(app.doc.activeElement.dataset.role, "check-btn", "focus moves to Continue");
 
@@ -228,8 +229,8 @@ test("[fuzz] 600 random clicks never break an invariant", () =>
       }
       const index = WORDS.indexOf(s.word);
       assert(index >= 0, `unknown word "${s.word}"`);
-      eq(s.count, `${index}/5`, "the count always matches the question");
       const checked = app.qa(".choice").every((b) => b.disabled);
+      eq(s.count, `${index + (checked ? 1 : 0)}/5`, "the count always matches the question and its checked state");
       const selected = app.qa(".choice--selected").length;
       assert(selected <= 1, "at most one selected choice");
       eq(s.checkDisabled, !checked && selected === 0, "Check is disabled exactly when nothing is selected");

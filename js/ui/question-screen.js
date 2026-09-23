@@ -12,7 +12,8 @@
  *
  * Done — reflects `state` in the rendered DOM:
  *   [P0] Progress bar: .progress-fill width and .progress-count text
- *        come from answeredCount() below.
+ *        come from answeredCount() below: it counts the current
+ *        question once checked, so the bar reaches 5/5.
  *   [P0] Selected choice: `.choice--selected` on the chosen button
  *        before it is checked.
  *   [P0] Checked state: all choice buttons disabled, `.choice--correct`
@@ -115,15 +116,14 @@ function setProgressWidth(fill, pct) {
 }
 
 /**
- * How many questions the progress bar counts as done. Kept in one place
- * so the formula can change without touching the render code — the PRD
- * says the bar runs from 0 of 5 to 5 of 5, which this formula never
- * reaches on the last question. Pending Wil's decision in Slack:
- * `state.index + (state.checked ? 1 : 0)` would fill the bar at the
- * moment feedback appears.
+ * How many questions the progress bar counts as done: every question
+ * before this one, plus this one once it is checked. The bar therefore
+ * fills at the moment the feedback appears and reaches 5 of 5 on the last
+ * check, as the PRD's acceptance criteria require. (Wil approved this
+ * formula in Slack on 23 Sept 2026; the scaffold's TODO used state.index.)
  */
 function answeredCount(state) {
-  return state.index;
+  return state.index + (state.checked ? 1 : 0);
 }
 
 /**

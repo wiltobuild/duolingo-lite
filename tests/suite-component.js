@@ -27,13 +27,24 @@ test("renders the prompt, the Spanish word, four choices and a Check button", as
 
 // --- progress bar ----------------------------------------------------------
 
-test("[P0] progress bar and count follow the question index (0/5 to 4/5)", async () => {
+test("[P0] before checking, the bar counts the questions already finished (0/5 to 4/5)", async () => {
   const { renderQuestionScreen } = await freshQuestionScreen();
   for (let i = 0; i < 5; i++) {
     const c = mount();
     renderQuestionScreen(stateFor({ index: i }), c, noHandlers);
     eq(c.querySelector(".progress-fill").style.width, `${i * 20}%`, `width at index ${i}`);
     eq(c.querySelector(".progress-count").textContent, `${i}/5`, `count at index ${i}`);
+  }
+});
+
+test("[P0, PRD acceptance] checking a question fills the bar; the last check reaches 5 of 5", async () => {
+  const { renderQuestionScreen } = await freshQuestionScreen();
+  for (let i = 0; i < 5; i++) {
+    const c = mount();
+    renderQuestionScreen(stateFor({ index: i, selectedChoice: 0, checked: true, lastAnswerCorrect: true }), c, noHandlers);
+    eq(c.querySelector(".progress-fill").style.width, `${(i + 1) * 20}%`, `width after checking question ${i + 1}`);
+    eq(c.querySelector(".progress-count").textContent, `${i + 1}/5`, `count after checking question ${i + 1}`);
+    eq(c.querySelector("[role='progressbar']").getAttribute("aria-valuenow"), String(i + 1));
   }
 });
 
