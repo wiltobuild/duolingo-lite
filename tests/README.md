@@ -34,3 +34,5 @@ Then open <http://localhost:5173/tests/>. The page shows a pass, fail, or known-
 A **known gap** (`todo`) runs and reports but does not fail the run. It records a real issue that the team has not fixed yet. When a known gap starts passing, the page says so: turn it into a normal test.
 
 To add a suite, create `tests/suite-<name>.js`, register tests with `test(...)` from `harness.js`, and import the file in `browser-tests.js`.
+
+No known gaps are open right now.
