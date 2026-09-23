@@ -21,11 +21,17 @@
   --accent: #37a06a;
   --accent-deep: #2b7f54;
   --accent-wash: #e7f3ec;
+  /* Fixed (theme-invariant) — for white text on an accent background, e.g.
+     .btn-primary. --accent/--accent-deep swap direction between themes
+     (lighter in dark mode for text emphasis), so neither reliably clears
+     4.5:1 for white text in both themes; this one does, in both. */
+  --accent-contrast: #2c8256;
+  --accent-contrast-deep: #226442;
 
   /* Color — semantic (answer feedback, not the brand accent) */
-  --good: #2f9e50;
+  --good: #247b3e;
   --good-wash: #e6f4ea;
-  --bad: #e0563e;
+  --bad: #c63820;
   --bad-wash: #fceae5;
   --xp: #f2b01e;
   --xp-wash: #fcf1d6;
