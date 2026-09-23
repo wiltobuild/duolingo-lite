@@ -43,7 +43,7 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
     </div>
 
     <p class="question-prompt">Which word means…</p>
-    <div class="question-word">${escapeHtml(question.word)}</div>
+    <div class="question-word" lang="es">${escapeHtml(question.word)}</div>
 
     <div class="choice-list" data-role="choice-list">
       ${question.choices

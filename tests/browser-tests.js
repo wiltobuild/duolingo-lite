@@ -11,5 +11,6 @@ import { run } from "./harness.js";
 import "./suite-component.js";
 import "./suite-e2e.js";
 import "./suite-layout.js";
+import "./suite-semantics.js";
 
 await run();
