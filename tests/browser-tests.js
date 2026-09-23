@@ -10,5 +10,6 @@ import { run } from "./harness.js";
 
 import "./suite-component.js";
 import "./suite-e2e.js";
+import "./suite-layout.js";
 
 await run();
