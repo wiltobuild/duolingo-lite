@@ -6,7 +6,7 @@
  *   non-text (progress bar, focus ring, control borders): 3:1
  */
 
-import { test, todo, assert, freshQuestionScreen, noHandlers, stateFor, mount } from "./harness.js";
+import { test, assert, freshQuestionScreen, noHandlers, stateFor, mount } from "./harness.js";
 import { renderFeedback } from "../js/ui/feedback.js";
 
 // --- color math ----------------------------------------------------------------
@@ -111,10 +111,7 @@ test("[contrast, WCAG 1.4.11] the progress fill and the focus ring stand out at 
   assert(failures.length === 0, "\n        " + failures.join("\n        "));
 });
 
-// Advisory: WCAG 1.4.11 asks for 3:1 on visual information needed to find a
-// control. The labeled buttons are identifiable by their text, so this is a
-// design choice for the team, not a hard failure.
-todo("[contrast, advisory] the resting border of an answer choice reaches 3:1 against the card", async () => {
+test("[contrast, WCAG 1.4.11] the resting border of an answer choice reaches 3:1 against the card in both themes", async () => {
   const { renderQuestionScreen } = await freshQuestionScreen();
   const failures = [];
 
