@@ -30,6 +30,7 @@ existing token/class covers it, or it belongs in `tokens.css` /
 | `--surface` / `--surface-2` | Card background / recessed surface (e.g. card header) |
 | `--ink` / `--ink-soft` / `--ink-faint` | Primary / secondary / tertiary text |
 | `--line` / `--line-strong` | Borders |
+| `--control-border` | Border of an interactive control such as an answer choice: 3:1 against the card in both themes |
 | `--accent` / `--accent-deep` / `--accent-wash` | Brand green — buttons, links, the Spanish word itself |
 | `--good` / `--bad` | **Semantic only** — correct/incorrect answer feedback. Don't reuse these as decorative color; they mean something specific to the learner. |
 | `--xp` | The XP reward pill on the completion screen (P2) |
@@ -55,6 +56,8 @@ screen uses them:
 - `.app-shell`, `.card`, `.card__header`, `.card__body` — page/card layout
 - `.progress-row`, `.progress-track`, `.progress-fill`, `.progress-count` — progress bar (Valerie)
 - `.question-prompt`, `.question-word`, `.choice-list`, `.choice` (+ `--selected` / `--correct` / `--wrong` modifiers) — question screen (Valerie)
+- `.choice__mark` — the symbol slot at the start of a choice (● selected, ✓ correct, ✕ wrong), so state never rests on color alone (Valerie)
+- `.visually-hidden` — text for screen readers only, e.g. "(correct answer)" on a choice (shared utility)
 - `.feedback-banner` (+ `--correct` / `--incorrect` modifiers) — feedback (Priscilla)
 - `.btn-primary` — the Check / Continue / Try again button, shared
 - `.completion`, `.completion__score`, `.xp-pill` — completion screen (Priscilla)

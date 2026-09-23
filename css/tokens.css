@@ -16,6 +16,8 @@
   --ink-faint: #7c877e;
   --line: #e3ded1;
   --line-strong: #d3ccbb;
+  /* Border of an interactive control: 3:1 against the card (WCAG 1.4.11) */
+  --control-border: #8a948c;
 
   /* Color — accent (brand) */
   --accent: #37a06a;
@@ -72,6 +74,7 @@
     --ink-faint: #7c877e;
     --line: #2c3639;
     --line-strong: #3a4649;
+    --control-border: #6b7a75;
 
     --accent: #4fc088;
     --accent-deep: #6fd0a0;
@@ -99,6 +102,7 @@
   --ink-faint: #7c877e;
   --line: #2c3639;
   --line-strong: #3a4649;
+  --control-border: #6b7a75;
 
   --accent: #4fc088;
   --accent-deep: #6fd0a0;

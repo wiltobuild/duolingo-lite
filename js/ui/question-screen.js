@@ -12,19 +12,21 @@
  *
  * Done — reflects `state` in the rendered DOM:
  *   [P0] Progress bar: .progress-fill width and .progress-count text
- *        come from answeredCount() below.
+ *        come from answeredCount() below: it counts the current
+ *        question once checked, so the bar reaches 5/5.
  *   [P0] Selected choice: `.choice--selected` on the chosen button
  *        before it is checked.
  *   [P0] Checked state: all choice buttons disabled, `.choice--correct`
  *        on the right answer, `.choice--wrong` on an incorrect pick.
  *   [P0] Check button: disabled until a choice is selected, and enabled
  *        again once checked (app.js relabels it "Continue").
+ *   [P1] Responsive layout: verified from 320px to 1280px (no sideways
+ *        scrolling, 44px touch targets) by tests/suite-layout.js.
  *
- * TODO(Valerie):
- *   [P1] Responsive layout: verify this reads well at ~360px width
- *        (phone) as well as desktop. The shell in css/components.css
- *        (.app-shell) already caps width — extend as needed, don't
- *        fight it with fixed widths here.
+ * Also handled here, beyond the PRD list: a progress fill that animates
+ * (see setProgressWidth), keyboard focus that survives app.js re-rendering
+ * the screen (see restoreFocus), and accessible names and non-color state
+ * symbols on the choices. Tests: see tests/README.md.
  */
 
 export function renderQuestionScreen(state, container, { onSelectChoice, onCheck }) {
@@ -42,16 +44,14 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
       <span class="progress-count" data-role="progress-count"></span>
     </div>
 
-    <p class="question-prompt">Which word means…</p>
-    <div class="question-word">${escapeHtml(question.word)}</div>
+    <p class="question-prompt" id="question-prompt">Which word means…</p>
+    <div class="question-word" id="question-word" lang="es">${escapeHtml(question.word)}</div>
 
-    <div class="choice-list" data-role="choice-list">
+    <div class="choice-list" role="group" aria-labelledby="question-prompt question-word">
       ${question.choices
         .map(
           (choice, i) =>
-            `<button class="choice${choiceModifier(state, i, correctIndex)}" type="button"
-              data-choice-index="${i}"${state.checked ? " disabled" : ""}
-              aria-pressed="${!state.checked && state.selectedChoice === i}">${escapeHtml(choice)}</button>`
+            choiceButton(state, i, correctIndex, choice)
         )
         .join("")}
     </div>
@@ -116,25 +116,44 @@ function setProgressWidth(fill, pct) {
 }
 
 /**
- * How many questions the progress bar counts as done. Kept in one place
- * so the formula can change without touching the render code — the PRD
- * says the bar runs from 0 of 5 to 5 of 5, which this formula never
- * reaches on the last question. Pending Wil's decision in Slack:
- * `state.index + (state.checked ? 1 : 0)` would fill the bar at the
- * moment feedback appears.
+ * How many questions the progress bar counts as done: every question
+ * before this one, plus this one once it is checked. The bar therefore
+ * fills at the moment the feedback appears and reaches 5 of 5 on the last
+ * check, as the PRD's acceptance criteria require. (Wil approved this
+ * formula in Slack on 23 Sept 2026; the scaffold's TODO used state.index.)
  */
 function answeredCount(state) {
-  return state.index;
+  return state.index + (state.checked ? 1 : 0);
 }
 
-/** The state-dependent modifier class (with a leading space) for one choice button. */
-function choiceModifier(state, i, correctIndex) {
+/**
+ * One answer button. Color alone must not carry the state, so each state
+ * also has a symbol (hidden from screen readers) and, for the answer
+ * feedback, spoken text that only screen readers get.
+ */
+function choiceButton(state, i, correctIndex, text) {
+  let modifier = "";
+  let mark = "";
+  let spoken = "";
   if (state.checked) {
-    if (i === correctIndex) return " choice--correct";
-    if (i === state.selectedChoice) return " choice--wrong";
-    return "";
+    if (i === correctIndex) {
+      modifier = " choice--correct";
+      mark = "✓";
+      spoken = " (correct answer)";
+    } else if (i === state.selectedChoice) {
+      modifier = " choice--wrong";
+      mark = "✕";
+      spoken = " (your answer, incorrect)";
+    }
+  } else if (i === state.selectedChoice) {
+    modifier = " choice--selected";
+    mark = "●";
   }
-  return i === state.selectedChoice ? " choice--selected" : "";
+
+  return `<button class="choice${modifier}" type="button" data-choice-index="${i}"${state.checked ? " disabled" : ""}
+    aria-pressed="${!state.checked && state.selectedChoice === i}"><span class="choice__mark" aria-hidden="true">${mark}</span><span>${escapeHtml(text)}</span>${
+      spoken ? `<span class="visually-hidden">${spoken}</span>` : ""
+    }</button>`;
 }
 
 function escapeHtml(str) {
