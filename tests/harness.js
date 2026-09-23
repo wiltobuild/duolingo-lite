@@ -35,6 +35,7 @@ export async function run() {
   const results = [];
 
   for (const t of registered) {
+    clearFixtures(); // ids on the question screen are unique per page, so start each test clean
     let status = "pass";
     let detail = "";
     try {
