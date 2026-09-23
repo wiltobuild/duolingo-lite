@@ -19,12 +19,13 @@
  *        on the right answer, `.choice--wrong` on an incorrect pick.
  *   [P0] Check button: disabled until a choice is selected, and enabled
  *        again once checked (app.js relabels it "Continue").
+ *   [P1] Responsive layout: verified from 320px to 1280px (no sideways
+ *        scrolling, 44px touch targets) by tests/suite-layout.js.
  *
- * TODO(Valerie):
- *   [P1] Responsive layout: verify this reads well at ~360px width
- *        (phone) as well as desktop. The shell in css/components.css
- *        (.app-shell) already caps width — extend as needed, don't
- *        fight it with fixed widths here.
+ * Also handled here, beyond the PRD list: a progress fill that animates
+ * (see setProgressWidth), keyboard focus that survives app.js re-rendering
+ * the screen (see restoreFocus), and accessible names and non-color state
+ * symbols on the choices. Tests: see tests/README.md.
  */
 
 export function renderQuestionScreen(state, container, { onSelectChoice, onCheck }) {
@@ -45,7 +46,7 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
     <p class="question-prompt" id="question-prompt">Which word means…</p>
     <div class="question-word" id="question-word" lang="es">${escapeHtml(question.word)}</div>
 
-    <div class="choice-list" data-role="choice-list" role="group" aria-labelledby="question-prompt question-word">
+    <div class="choice-list" role="group" aria-labelledby="question-prompt question-word">
       ${question.choices
         .map(
           (choice, i) =>
