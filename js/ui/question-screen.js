@@ -10,17 +10,17 @@
  *     and the Check button already calls `onCheck`. Don't rewire these —
  *     just make them *look* right for the current state.
  *
- * TODO(Valerie) — reflect `state` in the rendered DOM:
- *   [P0] Progress bar: set .progress-fill width to (state.index /
- *        state.questions.length) * 100%, and .progress-count text to
- *        `${state.index}/${state.questions.length}`.
- *   [P0] Selected choice: add `.choice--selected` to the chosen button
- *        before it's checked.
- *   [P0] Checked state: once `state.checked` is true, disable all choice
- *        buttons, add `.choice--correct` to the right answer, and
- *        `.choice--wrong` to an incorrect pick.
- *   [P0] Check button: disabled until a choice is selected (already
- *        partly done below — verify it covers the checked state too).
+ * Done — reflects `state` in the rendered DOM:
+ *   [P0] Progress bar: .progress-fill width and .progress-count text
+ *        come from answeredCount() below.
+ *   [P0] Selected choice: `.choice--selected` on the chosen button
+ *        before it is checked.
+ *   [P0] Checked state: all choice buttons disabled, `.choice--correct`
+ *        on the right answer, `.choice--wrong` on an incorrect pick.
+ *   [P0] Check button: disabled until a choice is selected, and enabled
+ *        again once checked (app.js relabels it "Continue").
+ *
+ * TODO(Valerie):
  *   [P1] Responsive layout: verify this reads well at ~360px width
  *        (phone) as well as desktop. The shell in css/components.css
  *        (.app-shell) already caps width — extend as needed, don't
@@ -29,10 +29,14 @@
 
 export function renderQuestionScreen(state, container, { onSelectChoice, onCheck }) {
   const question = state.questions[state.index];
+  const total = state.questions.length;
+  const answered = answeredCount(state);
+  const correctIndex = question.choices.indexOf(question.correct);
 
   container.innerHTML = `
     <div class="progress-row">
-      <div class="progress-track">
+      <div class="progress-track" role="progressbar" aria-label="Lesson progress"
+        aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${answered}">
         <div class="progress-fill" data-role="progress-fill"></div>
       </div>
       <span class="progress-count" data-role="progress-count"></span>
@@ -45,15 +49,22 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
       ${question.choices
         .map(
           (choice, i) =>
-            `<button class="choice" type="button" data-choice-index="${i}">${escapeHtml(choice)}</button>`
+            `<button class="choice${choiceModifier(state, i, correctIndex)}" type="button"
+              data-choice-index="${i}"${state.checked ? " disabled" : ""}
+              aria-pressed="${!state.checked && state.selectedChoice === i}">${escapeHtml(choice)}</button>`
         )
         .join("")}
     </div>
 
-    <button class="btn-primary" type="button" data-role="check-btn" disabled>
+    <button class="btn-primary" type="button" data-role="check-btn"${
+      state.selectedChoice === null && !state.checked ? " disabled" : ""
+    }>
       Check
     </button>
   `;
+
+  container.querySelector("[data-role='progress-fill']").style.width = `${(answered / total) * 100}%`;
+  container.querySelector("[data-role='progress-count']").textContent = `${answered}/${total}`;
 
   container.querySelectorAll("[data-choice-index]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -62,9 +73,28 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
   });
 
   container.querySelector("[data-role='check-btn']").addEventListener("click", onCheck);
+}
 
-  // TODO(Valerie): everything above renders the *shell*. Now make it
-  // reflect `state` — see the TODO list in this file's header comment.
+/**
+ * How many questions the progress bar counts as done. Kept in one place
+ * so the formula can change without touching the render code — the PRD
+ * says the bar runs from 0 of 5 to 5 of 5, which this formula never
+ * reaches on the last question. Pending Wil's decision in Slack:
+ * `state.index + (state.checked ? 1 : 0)` would fill the bar at the
+ * moment feedback appears.
+ */
+function answeredCount(state) {
+  return state.index;
+}
+
+/** The state-dependent modifier class (with a leading space) for one choice button. */
+function choiceModifier(state, i, correctIndex) {
+  if (state.checked) {
+    if (i === correctIndex) return " choice--correct";
+    if (i === state.selectedChoice) return " choice--wrong";
+    return "";
+  }
+  return i === state.selectedChoice ? " choice--selected" : "";
 }
 
 function escapeHtml(str) {
