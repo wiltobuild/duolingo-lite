@@ -12,5 +12,6 @@ import "./suite-component.js";
 import "./suite-e2e.js";
 import "./suite-layout.js";
 import "./suite-semantics.js";
+import "./suite-contrast.js";
 
 await run();

@@ -69,7 +69,7 @@
 /* Question prompt + answer choices — owner: Valerie (question screen) */
 .question-prompt {
   font-size: 13px;
-  color: var(--ink-faint);
+  color: var(--ink-soft);
   font-weight: 500;
 }
 
