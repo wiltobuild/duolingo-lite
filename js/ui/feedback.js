@@ -7,15 +7,6 @@
  * HTML string (or `null` to render nothing) — app.js inserts it after
  * the choice list.
  *
- * TODO(Priscilla):
- *   [P0] Show immediate correct/incorrect feedback after checking
- *        (state.lastAnswerCorrect).
- *   [P0] On an incorrect selection, show the correct answer — it's
- *        `state.questions[state.index].correct`.
- *   [P1] Make sure this is announced to screen readers (e.g. an
- *        aria-live region) — see the accessibility review requirement
- *        in the PRD's acceptance criteria.
- *
  * Reach for the .feedback-banner / .feedback-banner--correct /
  * .feedback-banner--incorrect classes in css/components.css — don't
  * introduce new one-off colors, they're already tokenized there.
@@ -24,7 +15,28 @@
 export function renderFeedback(state) {
   if (!state.checked) return null;
 
-  // TODO(Priscilla): replace this placeholder with the real banner
-  // markup (correct/incorrect state, correct-answer callout).
-  return null;
+  const question = state.questions[state.index];
+
+  if (state.lastAnswerCorrect) {
+    return `
+      <div class="feedback-banner feedback-banner--correct" role="status" aria-live="polite">
+        <span>Correct!</span>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="feedback-banner feedback-banner--incorrect" role="status" aria-live="polite">
+      <span>
+        Not quite.
+        <small>The correct answer is "${escapeHtml(question.correct)}".</small>
+      </span>
+    </div>
+  `;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
 }
