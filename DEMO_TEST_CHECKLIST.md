@@ -19,17 +19,24 @@ then edge cases. Status reflects the last run against `main` +
 
 ## Accessibility
 
+Audited what's currently reachable (static screens + globally-applied CSS).
+Answer-state styling (`.choice--correct/--wrong`) can't be audited yet — see
+blockers below.
+
 | Check | Status |
 |---|---|
 | Feedback banner announced to screen readers (`role="status"`, `aria-live="polite"`) | ✅ Pass |
-| Every interactive element has a visible focus state | Not yet audited — pending full accessibility review |
-| Reduced-motion respected | Not yet audited |
-| Color contrast (`--good`/`--bad` tokens) | Not yet audited |
+| Visible focus state on interactive elements (`:focus-visible` in base.css, not overridden anywhere) | ✅ Pass — confirmed live via Tab key, clear outline on choice buttons |
+| Reduced-motion respected | ✅ Pass — `@media (prefers-reduced-motion: reduce)` in base.css disables all transitions/animations globally; components.css has no motion outside that scope |
+| Color contrast — feedback banner text (`--good`/`--bad` on their `-wash` backgrounds, 14px/600 weight → counts as normal text, needs 4.5:1) | ❌ **Fail (light mode).** `--good` on `--good-wash` = 3.02:1, `--bad` on `--bad-wash` = 3.24:1. Dark mode passes (6.67:1 / 5.68:1). This is a token-level issue (`css/tokens.css`), not something to patch per-component — flagging for the team since other screens reuse these tokens. |
+| Color contrast — `.btn-primary` (white text on `--accent`, 15px/700 — doesn't meet the 18.66px bold threshold for "large text", needs 4.5:1) | ❌ **Fail.** Light mode 3.28:1, dark mode 2.28:1 (worse — dark mode's `--accent` is lighter/lower-contrast against white). Shared button used everywhere; also a token-level issue. |
+| Color contrast — completion score, XP pill, body text | ✅ Pass (4.5:1+ in both themes) |
 
 ## Known blockers before this is demoable
 
 1. **P0 — Check button never enables after selecting a choice** (`js/ui/question-screen.js`). Nothing else can be demoed until this lands.
-2. **P0 — Choice/progress state styling missing** (same file): selected/correct/wrong choice classes, progress bar fill and count.
+2. **P0 — Choice/progress state styling missing** (same file): selected/correct/wrong choice classes, progress bar fill and count. Also blocks auditing contrast on `.choice--correct`/`.choice--wrong`.
+3. **Accessibility — `--good`/`--bad` and `.btn-primary` fail WCAG AA contrast in light mode** (`.btn-primary` fails in dark mode too). Needs a token adjustment in `css/tokens.css` — raising this with the team since it's shared, not scoped to one owner's file.
 
 ## Retest once blockers land
 
