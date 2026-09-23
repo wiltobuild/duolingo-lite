@@ -1,0 +1,110 @@
+/*
+  Design tokens — Duolingo LITE
+  Source of truth for color, type, spacing, and radius across the app.
+  Mirrors the palette used in the team's PRD artifact so the shipped UI
+  matches what was pitched. Don't hardcode colors/fonts in component
+  files — add a token here and reference it instead.
+*/
+
+:root {
+  /* Color — surfaces & ink */
+  --paper: #faf8f3;
+  --surface: #ffffff;
+  --surface-2: #f3f0e7;
+  --ink: #1a2420;
+  --ink-soft: #4b574f;
+  --ink-faint: #7c877e;
+  --line: #e3ded1;
+  --line-strong: #d3ccbb;
+
+  /* Color — accent (brand) */
+  --accent: #37a06a;
+  --accent-deep: #2b7f54;
+  --accent-wash: #e7f3ec;
+
+  /* Color — semantic (answer feedback, not the brand accent) */
+  --good: #2f9e50;
+  --good-wash: #e6f4ea;
+  --bad: #e0563e;
+  --bad-wash: #fceae5;
+  --xp: #f2b01e;
+  --xp-wash: #fcf1d6;
+
+  /* Elevation */
+  --shadow: 0 1px 2px rgba(26, 36, 32, 0.05), 0 8px 24px -12px rgba(26, 36, 32, 0.18);
+  --shadow-lift: 0 2px 4px rgba(26, 36, 32, 0.06), 0 18px 40px -18px rgba(26, 36, 32, 0.28);
+
+  /* Type */
+  --font-display: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+}
+
+/* Dark mode — system preference, unless the page opts out */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12181a;
+    --surface: #1a2225;
+    --surface-2: #212b2e;
+    --ink: #eef2ec;
+    --ink-soft: #aab4ad;
+    --ink-faint: #7c877e;
+    --line: #2c3639;
+    --line-strong: #3a4649;
+
+    --accent: #4fc088;
+    --accent-deep: #6fd0a0;
+    --accent-wash: #182c23;
+
+    --good: #4fc088;
+    --good-wash: #152a1f;
+    --bad: #f0745c;
+    --bad-wash: #2e1c19;
+    --xp: #f6c34e;
+    --xp-wash: #2c2413;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+    --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.35), 0 20px 46px -18px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Dark mode — explicit toggle, if the app adds one later */
+:root[data-theme="dark"] {
+  --paper: #12181a;
+  --surface: #1a2225;
+  --surface-2: #212b2e;
+  --ink: #eef2ec;
+  --ink-soft: #aab4ad;
+  --ink-faint: #7c877e;
+  --line: #2c3639;
+  --line-strong: #3a4649;
+
+  --accent: #4fc088;
+  --accent-deep: #6fd0a0;
+  --accent-wash: #182c23;
+
+  --good: #4fc088;
+  --good-wash: #152a1f;
+  --bad: #f0745c;
+  --bad-wash: #2e1c19;
+  --xp: #f6c34e;
+  --xp-wash: #2c2413;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.35), 0 20px 46px -18px rgba(0, 0, 0, 0.7);
+}

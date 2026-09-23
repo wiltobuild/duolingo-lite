@@ -1,0 +1,70 @@
+# Design system
+
+Source of truth for how Duolingo LITE looks. If you're adding UI, start
+here instead of picking your own colors/fonts — it keeps all three
+screens (question, feedback, completion) looking like one app.
+
+Visual reference: the [PRD artifact](https://claude.ai/artifact/MSTFfQezWM5LutfGHvTfCR)
+shows the target look end to end, including a working demo of the full
+lesson loop. This scaffold's tokens and component classes are pulled
+directly from it.
+
+## Where things live
+
+| File | What it defines |
+|---|---|
+| `css/tokens.css` | Colors, fonts, spacing scale, radius — every value everything else should reference |
+| `css/base.css` | Reset + global typography |
+| `css/components.css` | Reusable component classes (buttons, choices, progress bar, cards, banners) |
+
+**Rule of thumb:** if you're about to write a hex code, a `px` spacing
+value, or a font name directly in a UI module, stop — either an
+existing token/class covers it, or it belongs in `tokens.css` /
+`components.css` so the other screens can reuse it too.
+
+## Color
+
+| Token | Use |
+|---|---|
+| `--paper` | Page background |
+| `--surface` / `--surface-2` | Card background / recessed surface (e.g. card header) |
+| `--ink` / `--ink-soft` / `--ink-faint` | Primary / secondary / tertiary text |
+| `--line` / `--line-strong` | Borders |
+| `--accent` / `--accent-deep` / `--accent-wash` | Brand green — buttons, links, the Spanish word itself |
+| `--good` / `--bad` | **Semantic only** — correct/incorrect answer feedback. Don't reuse these as decorative color; they mean something specific to the learner. |
+| `--xp` | The XP reward pill on the completion screen (P2) |
+
+All of the above are defined for light mode on `:root` and redefined
+for dark mode (system preference, or an explicit `data-theme="dark"`
+if the app ever adds a toggle). Never hardcode a color that only works
+in one theme.
+
+## Type
+
+- **Display** (`--font-display`, Bricolage Grotesque) — headings, the
+  Spanish word on the question screen, the completion score.
+- **Body** (`--font-body`, Instrument Sans) — everything else.
+- **Mono** (`--font-mono`, Space Mono) — the progress count (`3/5`) and
+  the completion score, anywhere digits line up.
+
+## Components
+
+Defined in `css/components.css`, documented inline with which owner's
+screen uses them:
+
+- `.app-shell`, `.card`, `.card__header`, `.card__body` — page/card layout
+- `.progress-row`, `.progress-track`, `.progress-fill`, `.progress-count` — progress bar (Valerie)
+- `.question-prompt`, `.question-word`, `.choice-list`, `.choice` (+ `--selected` / `--correct` / `--wrong` modifiers) — question screen (Valerie)
+- `.feedback-banner` (+ `--correct` / `--incorrect` modifiers) — feedback (Priscilla)
+- `.btn-primary` — the Check / Continue / Try again button, shared
+- `.completion`, `.completion__score`, `.xp-pill` — completion screen (Priscilla)
+
+## Responsive & accessibility
+
+- Design at ~360px width first (phone), then verify desktop — `.app-shell`
+  caps width at 480px so it never needs separate mobile/desktop layouts.
+- Every interactive element needs a visible focus state — this is
+  already handled globally in `base.css` (`:focus-visible`), don't
+  override it away.
+- Respect `prefers-reduced-motion` (already handled globally) if you add
+  any new animation.

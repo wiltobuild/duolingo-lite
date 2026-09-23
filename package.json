@@ -1,0 +1,9 @@
+{
+  "name": "duolingo-lite",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A five-question interactive Spanish practice lesson — one-week team build.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 5173"
+  }
+}

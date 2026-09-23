@@ -1,0 +1,228 @@
+/*
+  Components — shared UI patterns.
+  Use these classes instead of writing one-off styles, so the lesson
+  screen, feedback screen, and completion screen all look like one app.
+  Add new components here (not inline in JS) and note who owns them.
+*/
+
+/* Layout shell */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-block: var(--space-8);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+}
+
+.card__header {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.card__body {
+  padding: var(--space-5) var(--space-4) var(--space-6);
+}
+
+/* Progress bar — owner: Valerie (question screen) */
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.progress-track {
+  flex: 1;
+  height: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  transition: width 0.45s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+
+.progress-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Question prompt + answer choices — owner: Valerie (question screen) */
+.question-prompt {
+  font-size: 13px;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+.question-word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  margin: 2px 0 var(--space-5);
+  color: var(--accent-deep);
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  border-bottom-width: 3px;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: transform 0.06s, border-color 0.15s, background 0.15s;
+}
+
+.choice:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.choice:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.choice:disabled {
+  cursor: default;
+}
+
+.choice--selected {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.choice--correct {
+  border-color: var(--good);
+  background: var(--good-wash);
+  color: var(--good);
+}
+
+.choice--wrong {
+  border-color: var(--bad);
+  background: var(--bad-wash);
+  color: var(--bad);
+}
+
+/* Feedback banner — owner: Priscilla (feedback + completion) */
+.feedback-banner {
+  margin-top: var(--space-4);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.feedback-banner--correct {
+  background: var(--good-wash);
+  color: var(--good);
+}
+
+.feedback-banner--incorrect {
+  background: var(--bad-wash);
+  color: var(--bad);
+}
+
+.feedback-banner small {
+  display: block;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+/* Primary action button — shared */
+.btn-primary {
+  width: 100%;
+  margin-top: var(--space-4);
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  cursor: pointer;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 3px 0 var(--accent-deep);
+  transition: transform 0.06s, opacity 0.15s;
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--accent-deep);
+}
+
+.btn-primary:disabled {
+  background: var(--surface-2);
+  color: var(--ink-faint);
+  box-shadow: 0 3px 0 var(--line-strong);
+  cursor: not-allowed;
+}
+
+/* Completion screen — owner: Priscilla */
+.completion {
+  text-align: center;
+  padding: var(--space-2) var(--space-1) var(--space-1);
+}
+
+.completion__score {
+  font-family: var(--font-mono);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--accent-deep);
+  margin: var(--space-2) 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.xp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--xp-wash);
+  color: #8a6a12;
+  font-weight: 700;
+  font-size: 13px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  margin-top: var(--space-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .xp-pill {
+    color: var(--xp);
+  }
+}
+:root[data-theme="dark"] .xp-pill {
+  color: var(--xp);
+}
