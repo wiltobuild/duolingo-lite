@@ -63,7 +63,7 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
     </button>
   `;
 
-  container.querySelector("[data-role='progress-fill']").style.width = `${(answered / total) * 100}%`;
+  setProgressWidth(container.querySelector("[data-role='progress-fill']"), (answered / total) * 100);
   container.querySelector("[data-role='progress-count']").textContent = `${answered}/${total}`;
 
   container.querySelectorAll("[data-choice-index]").forEach((btn) => {
@@ -73,6 +73,22 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
   });
 
   container.querySelector("[data-role='check-btn']").addEventListener("click", onCheck);
+}
+
+// app.js rebuilds the whole screen on every state change, so each new
+// .progress-fill starts at its final width and a CSS transition has
+// nothing to animate. Remember the last width, start the new element
+// there, then move it to the new width so the bar visibly fills.
+let lastProgressPct = null;
+
+function setProgressWidth(fill, pct) {
+  const from = lastProgressPct !== null && pct > lastProgressPct ? lastProgressPct : pct;
+  fill.style.width = `${from}%`;
+  if (from !== pct) {
+    void fill.offsetWidth; // commit the starting width before changing it
+    fill.style.width = `${pct}%`;
+  }
+  lastProgressPct = pct;
 }
 
 /**
