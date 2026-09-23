@@ -42,10 +42,10 @@ export function renderQuestionScreen(state, container, { onSelectChoice, onCheck
       <span class="progress-count" data-role="progress-count"></span>
     </div>
 
-    <p class="question-prompt">Which word means…</p>
-    <div class="question-word" lang="es">${escapeHtml(question.word)}</div>
+    <p class="question-prompt" id="question-prompt">Which word means…</p>
+    <div class="question-word" id="question-word" lang="es">${escapeHtml(question.word)}</div>
 
-    <div class="choice-list" data-role="choice-list">
+    <div class="choice-list" data-role="choice-list" role="group" aria-labelledby="question-prompt question-word">
       ${question.choices
         .map(
           (choice, i) =>
